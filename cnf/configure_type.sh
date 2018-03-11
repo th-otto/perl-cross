@@ -40,7 +40,7 @@ checksize() {
 
 	if not try_readelf -s > try.out 2>>$cfglog; then
 		result 'unknown'
-		die "Cannot determine sizeof($2), use -D${1}size="
+		die "Cannot determine sizeof($2), use -D${1}="
 		return
 	fi
 
