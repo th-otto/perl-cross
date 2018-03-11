@@ -42,10 +42,10 @@ checkfunc d_chroot 'chroot' "NULL" 'unistd.h'
 checkfunc d_chsize 'chsize' "0,0"
 checkfunc d_class 'class'
 checkfunc d_clearenv 'clearenv' "" 'stdlib.h'
-checkfunc d_clock
-checkfunc d_clock_getres "0, 0"
-checkfunc d_clock_gettime "0, 0"
-checkfunc d_clock_nanosleep "0, 0, 0, 0"
+checkfunc d_clock clock
+checkfunc d_clock_getres 'clock_getres' "0, 0"
+checkfunc d_clock_gettime 'clock_gettime' "0, 0"
+checkfunc d_clock_nanosleep 'clock_nanosleep' "0, 0, 0, 0"
 checkfunc d_closedir 'closedir' "NULL"
 checkfunc d_crypt 'crypt'
 checkfunc d_ctermid 'ctermid'
@@ -178,7 +178,7 @@ checkfunc d_msgrcv 'msgrcv'
 checkfunc d_msgsnd 'msgsnd'
 checkfunc d_msync 'msync'
 checkfunc d_munmap 'munmap'
-checkfunc d_nanosleep "0, 0"
+checkfunc d_nanosleep 'nanosleep' "0, 0"
 checkfunc d_newlocale 'newlocale' '0,NULL,0' 'locale.h'
 checkfunc d_nice 'nice' '0'
 checkfunc d_nl_langinfo 'nl_langinfo'
