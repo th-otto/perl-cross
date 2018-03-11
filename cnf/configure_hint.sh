@@ -62,12 +62,14 @@ msg "Checking which hints to use"
 
 arch=`echo "$targetarch" | cut -d - -f 1`
 
+if [ "$archname" = "" ]; then
 if [ "$osname" = "MSWin32" ]; then
 	# Win32 archnames do not follow the simple scheme below
 	set_win32_archname
 else
 	# For i686-pc-linux-gnu, try linux and i686-linux
 	archname="$arch-$osname"
+fi
 fi
 
 if [ -n "$userhints" ]; then
