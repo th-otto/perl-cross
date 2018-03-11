@@ -1,0 +1,117 @@
+--- a/ext/Errno/Errno_pm.PL.orig	2018-03-11 14:49:39.429054194 +0100
++++ b/ext/Errno/Errno_pm.PL	2018-03-11 14:58:47.401042270 +0100
+@@ -9,7 +9,7 @@
+ # Symbian cross-compiling environment.
+ my $IsSymbian = exists $ENV{SDK} && -d "$ENV{SDK}\\epoc32";
+ 
+-my $IsMSWin32 = $^O eq 'MSWin32' && !$IsSymbian;
++my $IsMSWin32 = $Config{'osname'} eq 'MSWin32' && !$IsSymbian;
+ 
+ unlink "Errno.pm" if -f "Errno.pm";
+ unlink "Errno.tmp" if -f "Errno.tmp";
+@@ -17,7 +17,7 @@
+ select OUT;
+ my $file;
+ my @files = get_files();
+-if ($Config{gccversion} ne '' && $^O eq 'MSWin32') {
++if ($Config{gccversion} ne '' && $Config{'osname'} eq 'MSWin32') {
+     # MinGW complains "warning: #pragma system_header ignored outside include
+     # file" if the header files are processed individually, so include them
+     # all in .c file and process that instead.
+@@ -47,7 +47,7 @@
+     my($file) = @_;
+ 
+     # for win32 perl under cygwin, we need to get a windows pathname
+-    if ($^O eq 'MSWin32' && $Config{cc} =~ /\B-mno-cygwin\b/ &&
++    if ($Config{'osname'} eq 'MSWin32' && $Config{cc} =~ /\B-mno-cygwin\b/ &&
+         defined($file) && !-f $file) {
+         chomp($file = `cygpath -w "$file"`);
+     }
+@@ -56,12 +56,12 @@
+ #    warn "Processing $file\n";
+ 
+     local *FH;
+-    if (($^O eq 'VMS') && ($Config{vms_cc_type} ne 'gnuc')) {
++    if (($Config{'osname'} eq 'VMS') && ($Config{vms_cc_type} ne 'gnuc')) {
+ 	unless(open(FH," LIBRARY/EXTRACT=ERRNO/OUTPUT=SYS\$OUTPUT $file |")) {
+             warn "Cannot open '$file'";
+             return;
+ 	}     
+-    } elsif ($Config{gccversion} ne '' && $^O ne 'darwin' ) {
++    } elsif ($Config{gccversion} ne '' && $Config{'osname'} ne 'darwin' ) {
+ 	# With the -dM option, gcc outputs every #define it finds
+ 	unless(open(FH,"$Config{cc} -E -dM $Config{cppflags} $file |")) {
+             warn "Cannot open '$file'";
+@@ -112,9 +112,9 @@
+ sub get_files {
+     my %file = ();
+     # VMS keeps its include files in system libraries
+-    if ($^O eq 'VMS') {
++    if ($Config{'osname'} eq 'VMS') {
+ 	$file{'Sys$Library:DECC$RTLDEF.TLB'} = 1;
+-    } elsif ($^O eq 'os390') {
++    } elsif ($Config{'osname'} eq 'os390') {
+ 	# OS/390 C compiler doesn't generate #file or #line directives
+ 	$file{'/usr/include/errno.h'} = 1;
+     } elsif ($Config{archname} eq 'arm-riscos') {
+@@ -123,7 +123,7 @@
+ 	if ($dep =~ /(\S+errno\.h)/) {
+ 	     $file{$1} = 1;
+ 	}
+-    } elsif ($^O eq 'linux' &&
++    } elsif ($Config{'osname'} eq 'linux' &&
+ 	      $Config{gccversion} ne '' && 
+ 	      $Config{gccversion} !~ /intel/i
+ 	      # might be using, say, Intel's icc
+@@ -152,7 +152,7 @@
+ 	open(CPPI, '>', 'errno.c') or
+ 	    die "Cannot open errno.c";
+ 
+-	if ($^O eq 'NetWare') {
++	if ($Config{'osname'} eq 'NetWare') {
+ 	    print CPPI "#include <nwerrno.h>\n";
+ 	} else {
+ 	    print CPPI "#include <errno.h>\n";
+@@ -164,7 +164,7 @@
+ 	close(CPPI);
+ 
+ 	# invoke CPP and read the output
+-	if ($IsMSWin32 || $^O eq 'NetWare') {
++	if ($IsMSWin32 || $Config{'osname'} eq 'NetWare') {
+ 	    open(CPPO,"$Config{cpprun} $Config{cppflags} errno.c |") or
+ 		die "Cannot run '$Config{cpprun} $Config{cppflags} errno.c'";
+ 	} else {
+@@ -175,7 +175,7 @@
+ 
+ 	my $pat = '^#\s*(?:line)?\s*\d+\s+"([^"]+)"';
+ 	while(<CPPO>) {
+-	    if ($^O eq 'os2' or $IsMSWin32 or $^O eq 'NetWare') {
++	    if ($Config{'osname'} eq 'os2' or $IsMSWin32 or $Config{'osname'} eq 'NetWare') {
+ 		if (/$pat/o) {
+ 		   my $f = $1;
+ 		   $f =~ s,\\\\,/,g;
+@@ -203,7 +203,7 @@
+     open(CPPI, '>', 'errno.c') or
+ 	die "Cannot open errno.c";
+ 
+-    if ($^O eq 'NetWare') {
++    if ($Config{'osname'} eq 'NetWare') {
+ 	print CPPI "#include <nwerrno.h>\n";
+ 	} 
+     else {
+@@ -229,13 +229,13 @@
+ 	    $inhibit_linemarkers = ' -P';
+ 	}
+ 
+-	if ($^O eq 'VMS') {
++	if ($Config{'osname'} eq 'VMS') {
+ 	    my $cpp = "$Config{cppstdin} $Config{cppflags}" .
+ 		$inhibit_linemarkers . " $Config{cppminus}";
+ 	    $cpp =~ s/sys\$input//i;
+ 	    open(CPPO,"$cpp  errno.c |") or
+ 		die "Cannot exec $Config{cppstdin}";
+-	} elsif ($IsMSWin32 || $^O eq 'NetWare') {
++	} elsif ($IsMSWin32 || $Config{'osname'} eq 'NetWare') {
+ 	    my $cpp = "$Config{cpprun} $Config{cppflags}" .
+ 		$inhibit_linemarkers;
+ 	    open(CPPO,"$cpp errno.c |") or

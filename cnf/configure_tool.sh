@@ -316,7 +316,7 @@ enddef optimize
 # For newer gcc-s, -E alone is *not* enough! Perl expects cpp not to break
 # lines, but gcc injects #line directives in-between tokens, subtly breaking
 # try_preproc and Errno.pm
-define cpp "$cc -E -P"
+define cpp "$cc -E"
 define cpprun "$cpp"
 define cppstdin "$cpp"
 
