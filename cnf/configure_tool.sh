@@ -147,20 +147,20 @@ if not hinted "extern_C"; then
 fi
 
 # File name extensions, must be set before running any compile/link tests
-define _o '.o'
-define _a '.a'
-define so 'so'
-define _exe ''
+hinted "_o" || define _o '.o'
+hinted "_a" || define _a '.a'
+hinted "so" || define so 'so'
+hinted "_exe" || define _exe ''
 
 # Used only for modules
 define cccdlflags '-fPIC -Wno-unused-function'
 define ccdlflags '-Wl,-E'
 
 # Misc flags setup
-predef lddlflags "-shared"	# modules
-predef ccflags ''		# perl and modules
-predef ldflags ''		# perl only?
-predef cppflags ''		# unused?
+hinted "lddlflags" || predef lddlflags "-shared"	# modules
+hinted "ccflags" || predef ccflags ''		# perl and modules
+hinted "ldflags" || predef ldflags ''		# perl only?
+hinted "cppflags" || predef cppflags ''		# unused?
 
 # setfromvar what SHELLVAR
 setfromenv() {
