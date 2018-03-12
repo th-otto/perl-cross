@@ -408,11 +408,7 @@ install.man: installman pod/perltoc.pod | miniperl$X
 
 ifneq ($(perlname),perl)
 install.sym:
-	-rm -f $(DESTDIR)$(installbin)/$(perlname)$(version)
 	ln -sf $(perlname) $(DESTDIR)$(installbin)/perl
-else
-install.sym:
-	-rm -f $(DESTDIR)$(installbin)/$(perlname)$(version)
 endif
 
 # ---[ testpack ]---------------------------------------------------------------
