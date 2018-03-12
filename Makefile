@@ -412,7 +412,7 @@ install.sym:
 	ln -sf $(perlname) $(DESTDIR)$(installbin)/perl
 else
 install.sym:
-	-rm -f $(DESTDIR)$(installbin)/$(perlname)$(version)
+	: -rm -f $(DESTDIR)$(installbin)/$(perlname)$(version)
 endif
 
 # ---[ testpack ]---------------------------------------------------------------
