@@ -88,6 +88,7 @@ whichprog cc CC gcc || whichprog cc CC cc || die "No C compiler found"
 whichprog ar AR ar || die "Cannot find ar"
 whichprog nm NM nm
 whichprog ranlib RANLIB ranlib
+whichprog strip STRIP strip
 whichprog readelf READELF readelf || die "Cannot find readelf"
 whichprog objdump OBJDUMP objdump || die "Cannot find objdump"
 

@@ -14,6 +14,7 @@ if [ "$usecrosscompile" = 'define' ]; then
 	unset ccflags
 	unset ar
 	unset ranlib
+	unset strip
 	unset libs
 	if [ ! -f 'xconfig.sh' ]; then
 		echo 'xconfig.sh not found' >&2
@@ -26,6 +27,7 @@ if [ "$usecrosscompile" = 'define' ]; then
 	hostldflags="$ldflags"
 	hostar="$ar"
 	hostranlib="$ranlib"
+	hoststrip="$strip"
 	hostlibs="$perllibs"
 	host_o="$_o"
 	host_exe="$_exe"
@@ -64,6 +66,7 @@ CROSS = $cross
 CC = `ifprefixed "$cross" "$cc"`
 AR = `ifprefixed "$cross" "$ar"`
 RANLIB = `ifprefixed "$cross" "$ranlib"`
+STRIP = `ifprefixed "$cross" "$strip"`
 CFLAGS = $cflags
 LDFLAGS = $ldflags
 LDDLFLAGS = $lddlflags
@@ -97,6 +100,7 @@ cat >> Makefile.config <<END
 CC = $cc
 AR = $ar
 RANLIB = $ranlib
+STRIP = $strip
 CFLAGS = $cflags
 LDFLAGS = $ldflags
 LDDLFLAGS = $lddlflags

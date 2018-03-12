@@ -142,7 +142,9 @@ if [ "$mode" = 'native' ]; then
 	echo "          c compiler:  $cc"
 	echo "                  ld:  $ld"
 	echo "                  ar:  $ar"
+	echo "                  nm:  $nm"
 	echo "              ranlib:  $ranlib"
+	echo "               strip:  $strip"
 	echo
 	echo "              prefix:  $prefix"
 	echo " installation prefix:  $installprefix"
@@ -167,7 +169,9 @@ elif [ "$mode" = 'cross' ]; then
 	echo "          C compiler:  $cc"
 	echo "              linker:  $ld"
 	echo "                  ar:  $ar"
+	echo "                  nm:  $nm"
 	echo "              ranlib:  $ranlib"
+	echo "               strip:  $strip"
 	echo "             objdump:  $objdump"
 	echo
 	. ./config.sh
@@ -175,7 +179,9 @@ elif [ "$mode" = 'cross' ]; then
 	echo "          C compiler:  $cc"
 	echo "                  ld:  $ld"
 	echo "                  ar:  $ar"
+	echo "                  nm:  $nm"
 	echo "              ranlib:  $ranlib"
+	echo "               strip:  $strip"
 	echo "             objdump:  $objdump"
 	echo
 	echo "              prefix:  $prefix"

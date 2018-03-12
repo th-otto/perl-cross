@@ -162,7 +162,7 @@ while [ $i -le $# -o -n "$n" ]; do
 		vendorprefix|vendorhtml[13]dir)	defuser $a "$v" ;;
 		target|targetarch)		defuser $a "$v" ;;
 		build|buildarch)		defuser $a "$v" ;;
-		cc|cpp|ar|ranlib|objdump)	defuser $a "$v" ;;
+		cc|cpp|ar|ranlib|objdump|strip)	defuser $a "$v" ;;
 		sysroot)			defuser $a "$v" ;;
 		ttp|tools-prefix|target-tools-prefix)
 			setenv 'toolsprefix' "$v"
