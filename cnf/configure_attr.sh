@@ -122,7 +122,7 @@ int main()
 	foo = foo;
 }
 END
-	try_compile_check_warnings
+	try_compile
 	resdef d_volatile 'yes' 'no'
 fi
 
