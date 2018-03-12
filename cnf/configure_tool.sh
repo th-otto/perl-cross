@@ -316,7 +316,15 @@ enddef optimize
 # For newer gcc-s, -E alone is *not* enough! Perl expects cpp not to break
 # lines, but gcc injects #line directives in-between tokens, subtly breaking
 # try_preproc and Errno.pm
-define cpp "$cc -E"
+cppftrack=
+mstart "wether $cc understands -ftrack-macro-expansion"
+if run $cc -E -ftrack-macro-expansion=0 - < /dev/null >/dev/null 2>&1 ; then
+	cppftrack=" -ftrack-macro-expansion=0"
+	result "yes"
+else
+	result "no"
+fi
+define cpp "$cc -E${cppftrack}"
 define cpprun "$cpp"
 define cppstdin "$cpp"
 
